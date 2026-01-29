@@ -1,0 +1,26 @@
+<div class="auth-wrapper">
+      <div class="auth-card">
+
+        <div class="tabs">
+          <button
+            [class.active]="mode === 'login'"
+            (click)="mode = 'login'">
+            Login
+          </button>
+
+          <button
+            [class.active]="mode === 'register'"
+            (click)="mode = 'register'">
+            Register
+          </button>
+        </div>
+
+        <app-login *ngIf="mode === 'login'">
+          <router-outlet></router-outlet>
+        </app-login>
+        
+        <app-register *ngIf="mode === 'register'"></app-register>
+        
+      </div>
+      
+    </div>

@@ -1,0 +1,34 @@
+.auth-wrapper {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    }
+
+    .auth-card {
+      width: 380px;
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 25px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    }
+
+    .tabs {
+      display: flex;
+      margin-bottom: 20px;
+    }
+
+    .tabs button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background: #eee;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .tabs button.active {
+      background: #1976d2;
+      color: white;
+    }

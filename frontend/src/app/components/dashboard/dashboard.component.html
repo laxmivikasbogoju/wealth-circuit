@@ -1,0 +1,23 @@
+<div class="dashboard">
+      <h2>Market Dashboard</h2>
+
+      <div class="search">
+        <input
+          type="text"
+          placeholder="Enter stock symbol (e.g. RELIANCE)"
+          [(ngModel)]="symbol"
+        />
+        <button (click)="getQuote()">Get Quote</button>
+      </div>
+
+      <div *ngIf="quote" class="quote-box">
+        <h3>{{ quote.symbol }}</h3>
+        <p>Price: ₹{{ quote.price }}</p>
+        <p>Change: {{ quote.change }}%</p>
+      </div>
+
+      <div class="live-box" *ngIf="liveData">
+        <h3>Live Market</h3>
+        <p>{{ liveData.symbol }} : ₹{{ liveData.price }}</p>
+      </div>
+    </div>
