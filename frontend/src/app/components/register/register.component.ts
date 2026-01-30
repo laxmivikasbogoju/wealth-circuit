@@ -1,51 +1,82 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, FormsModule],
-   templateUrl: './register.component.html',
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
+  registerForm: FormGroup;
+  errorMessage = '';
+  successMessage = '';
+  isLoading = false;
 
-  email = '';
-  password = '';
-  success = '';
-  error = '';
-
-  constructor(private auth: AuthService) {}
-
-  register() {
-  this.success = '';
-  this.error = '';
-
-  // bcrypt-safe limit (leave buffer)
-  if (this.password.length > 64) {
-    this.error = 'Password must be 64 characters or less';
-    return;
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
+    this.registerForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      username: ['', [Validators.required, Validators.minLength(3)]],
+      full_name: [''],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', [Validators.required]]
+    }, { validators: this.passwordMatchValidator });
   }
 
-  if (this.password.length < 8) {
-    this.error = 'Password must be at least 8 characters';
-    return;
-  }
-
-  this.auth.register({
-    email: this.email,
-    password: this.password
-  }).subscribe({
-    next: () => {
-      this.success = 'Account created successfully';
-      this.email = '';
-      this.password = '';
-    },
-    error: (err) => {
-      this.error = err.error?.detail || 'Registration failed';
+  passwordMatchValidator(form: FormGroup) {
+    const password = form.get('password');
+    const confirmPassword = form.get('confirmPassword');
+    if (password && confirmPassword && password.value !== confirmPassword.value) {
+      confirmPassword.setErrors({ passwordMismatch: true });
+      return { passwordMismatch: true };
     }
-  });
+    return null;
+  }
+
+  onSubmit(): void {
+    if (this.registerForm.valid) {
+      this.isLoading = true;
+      this.errorMessage = '';
+      this.successMessage = '';
+
+      const { confirmPassword, ...registerData } = this.registerForm.value;
+
+      this.authService.register(registerData).subscribe({
+        next: () => {
+          this.successMessage = 'Registration successful! Redirecting to login...';
+          setTimeout(() => {
+            this.router.navigate(['/auth/login']);
+          }, 2000);
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.errorMessage = error.error?.detail || 'Registration failed. Please try again.';
+        }
+      });
+    }
+  }
+
+  get email() {
+    return this.registerForm.get('email');
+  }
+
+  get username() {
+    return this.registerForm.get('username');
+  }
+
+  get password() {
+    return this.registerForm.get('password');
+  }
+
+  get confirmPassword() {
+    return this.registerForm.get('confirmPassword');
   }
 }

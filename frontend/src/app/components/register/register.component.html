@@ -1,16 +1,113 @@
-<h2>Create Account</h2>
+<div class="register-container">
+  <div class="register-card">
+    <div class="logo-section">
+      <div class="logo">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+          <path d="M8 32L16 24L24 28L40 12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="40" cy="12" r="3" fill="currentColor"/>
+        </svg>
+      </div>
+      <h1>Join StockHub</h1>
+      <p class="tagline">Start your investment journey</p>
+    </div>
 
-    <input
-      type="email"
-      placeholder="Email"
-      [(ngModel)]="email" />
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input 
+          id="email"
+          type="email" 
+          formControlName="email"
+          placeholder="you@example.com"
+          [class.error]="email?.invalid && email?.touched"
+        />
+        <span class="error-text" *ngIf="email?.invalid && email?.touched">
+          <span *ngIf="email?.errors?.['required']">Email is required</span>
+          <span *ngIf="email?.errors?.['email']">Enter a valid email</span>
+        </span>
+      </div>
 
-    <input
-      type="password"
-      placeholder="Password"
-      [(ngModel)]="password" />
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input 
+          id="username"
+          type="text" 
+          formControlName="username"
+          placeholder="johndoe"
+          [class.error]="username?.invalid && username?.touched"
+        />
+        <span class="error-text" *ngIf="username?.invalid && username?.touched">
+          <span *ngIf="username?.errors?.['required']">Username is required</span>
+          <span *ngIf="username?.errors?.['minlength']">Minimum 3 characters</span>
+        </span>
+      </div>
 
-    <button (click)="register()">Register</button>
+      <div class="form-group">
+        <label for="full_name">Full Name (Optional)</label>
+        <input 
+          id="full_name"
+          type="text" 
+          formControlName="full_name"
+          placeholder="John Doe"
+        />
+      </div>
 
-    <p class="success" *ngIf="success">{{ success }}</p>
-    <p class="error" *ngIf="error">{{ error }}</p>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input 
+          id="password"
+          type="password" 
+          formControlName="password"
+          placeholder="••••••••"
+          [class.error]="password?.invalid && password?.touched"
+        />
+        <span class="error-text" *ngIf="password?.invalid && password?.touched">
+          <span *ngIf="password?.errors?.['required']">Password is required</span>
+          <span *ngIf="password?.errors?.['minlength']">Minimum 6 characters</span>
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input 
+          id="confirmPassword"
+          type="password" 
+          formControlName="confirmPassword"
+          placeholder="••••••••"
+          [class.error]="confirmPassword?.invalid && confirmPassword?.touched"
+        />
+        <span class="error-text" *ngIf="confirmPassword?.invalid && confirmPassword?.touched">
+          <span *ngIf="confirmPassword?.errors?.['required']">Please confirm password</span>
+          <span *ngIf="confirmPassword?.errors?.['passwordMismatch']">Passwords do not match</span>
+        </span>
+      </div>
+
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <div class="success-message" *ngIf="successMessage">
+        {{ successMessage }}
+      </div>
+
+      <button 
+        type="submit" 
+        class="submit-btn"
+        [disabled]="registerForm.invalid || isLoading"
+      >
+        <span *ngIf="!isLoading">Create Account</span>
+        <span *ngIf="isLoading" class="loading">Creating account...</span>
+      </button>
+
+      <div class="divider">
+        <span>Already have an account?</span>
+      </div>
+
+      <a routerLink="/auth/login" class="login-link">
+        Sign in instead
+      </a>
+    </form>
+  </div>
+
+  <div class="background-pattern"></div>
+</div>

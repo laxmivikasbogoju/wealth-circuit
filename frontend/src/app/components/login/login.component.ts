@@ -1,42 +1,54 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
-import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-    imports: [CommonModule, FormsModule], 
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']})
+  styleUrls: ['./login.component.css']
+})
 export class LoginComponent {
+  loginForm: FormGroup;
+  errorMessage = '';
+  isLoading = false;
 
-  email: string = '';
-  password: string = '';
-  error: string = '';
-showRegister: any;
-
-  constructor(private authService: AuthService, private router: Router) {}
-
-  login() {
-    this.error = '';
-
-    this.authService.login({
-      email: this.email,
-      password: this.password
-    }).subscribe({
-      next: (res: any) => {
-        // Save JWT token
-        localStorage.setItem('access_token', res.access_token);
-        this.router.navigate(['/dashboard']); // ✅ redirect
-
-        // You can redirect to dashboard here
-        console.log('Login successful');
-      },
-      error: () => {
-        this.error = 'Invalid email or password';
-      }
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
     });
+  }
+
+  onSubmit(): void {
+    if (this.loginForm.valid) {
+      this.isLoading = true;
+      this.errorMessage = '';
+
+      this.authService.login(this.loginForm.value).subscribe({
+        next: () => {
+          this.router.navigate(['/dashboard']);
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.errorMessage = error.error?.detail || 'Login failed. Please try again.';
+        }
+      });
+    }
+  }
+
+  get email() {
+    return this.loginForm.get('email');
+  }
+
+  get password() {
+    return this.loginForm.get('password');
   }
 }

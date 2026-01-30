@@ -1,15 +1,69 @@
- <h2>Welcome Back</h2>
+<div class="login-container">
+  <div class="login-card">
+    <div class="logo-section">
+      <div class="logo">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+          <path d="M8 32L16 24L24 28L40 12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="40" cy="12" r="3" fill="currentColor"/>
+        </svg>
+      </div>
+      <h1>StockHub</h1>
+      <p class="tagline">Real-time market intelligence</p>
+    </div>
 
-    <input
-      type="email"
-      placeholder="Email"
-      [(ngModel)]="email" />
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input 
+          id="email"
+          type="email" 
+          formControlName="email"
+          placeholder="you@example.com"
+          [class.error]="email?.invalid && email?.touched"
+        />
+        <span class="error-text" *ngIf="email?.invalid && email?.touched">
+          <span *ngIf="email?.errors?.['required']">Email is required</span>
+          <span *ngIf="email?.errors?.['email']">Enter a valid email</span>
+        </span>
+      </div>
 
-    <input
-      type="password"
-      placeholder="Password"
-      [(ngModel)]="password" />
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input 
+          id="password"
+          type="password" 
+          formControlName="password"
+          placeholder="••••••••"
+          [class.error]="password?.invalid && password?.touched"
+        />
+        <span class="error-text" *ngIf="password?.invalid && password?.touched">
+          <span *ngIf="password?.errors?.['required']">Password is required</span>
+          <span *ngIf="password?.errors?.['minlength']">Minimum 6 characters</span>
+        </span>
+      </div>
 
-    <button (click)="login()">Login</button>
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
 
-    <p class="error" *ngIf="error">{{ error }}</p>
+      <button 
+        type="submit" 
+        class="submit-btn"
+        [disabled]="loginForm.invalid || isLoading"
+      >
+        <span *ngIf="!isLoading">Sign In</span>
+        <span *ngIf="isLoading" class="loading">Signing in...</span>
+      </button>
+
+      <div class="divider">
+        <span>New to StockHub?</span>
+      </div>
+
+      <a routerLink="/auth/register" class="register-link">
+        Create an account
+      </a>
+    </form>
+  </div>
+
+  <div class="background-pattern"></div>
+</div>
