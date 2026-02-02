@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from datetime import timedelta
 from app.core.database import get_db
-from app.core.security import verify_password, get_password_hash, create_access_token
+from app.core.security import verify_password, get_password_hash, create_access_token, get_current_user
 from app.core.config import settings
 from app.models.user import User
 from app.schemas.user import UserCreate, UserLogin, UserResponse, Token
@@ -77,8 +77,6 @@ async def login(user_credentials: UserLogin, db: Session = Depends(get_db)):
     }
 
 @router.get("/me", response_model=UserResponse)
-async def get_current_user_info(current_user: User = Depends(get_db)):
+async def get_current_user_info(current_user: User = Depends(get_current_user)):
     """Get current user information"""
-    from app.core.security import get_current_user
-    user = await get_current_user()
-    return user
+    return current_user
