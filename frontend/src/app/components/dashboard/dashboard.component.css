@@ -41,8 +41,10 @@
   color: #00ffaa;
 }
 
-.logo-brand svg {
-  color: #00ffaa;
+.logo-brand img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
 }
 
 .header-actions {
@@ -182,6 +184,10 @@
   overflow: hidden;
 }
 
+.index-card.clickable {
+  cursor: pointer;
+}
+
 .index-card::before {
   content: '';
   position: absolute;
@@ -202,6 +208,27 @@
   border-color: rgba(0, 255, 170, 0.2);
   transform: translateY(-4px);
   box-shadow: 0 12px 40px rgba(0, 255, 170, 0.15);
+}
+
+.index-card.clickable:active {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 255, 170, 0.2);
+}
+
+.view-chart-hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  font-size: 12px;
+  color: rgba(0, 255, 170, 0.6);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  font-weight: 500;
+}
+
+.index-card:hover .view-chart-hint {
+  opacity: 1;
 }
 
 .index-header {
@@ -372,8 +399,17 @@
   transition: all 0.2s ease;
 }
 
+.stock-row.clickable {
+  cursor: pointer;
+}
+
 .stock-row:hover {
   background: rgba(255, 255, 255, 0.04);
+  transform: translateX(4px);
+}
+
+.stock-row.clickable:active {
+  transform: translateX(2px);
 }
 
 .symbol-text {

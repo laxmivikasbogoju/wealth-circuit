@@ -20,10 +20,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   losers: StockQuote[] = [];
   news: NewsItem[] = [];
   currentUser: any;
+  nowIso!: string;
   
   private subscriptions: Subscription[] = [];
   isLoading = true;
- 
 
   constructor(
     private marketDataService: MarketDataService,
@@ -34,6 +34,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadData();
     this.setupRealTimeUpdates();
+    this.nowIso = new Date().toISOString();
   }
 
   ngOnDestroy(): void {
@@ -125,5 +126,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
     if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
     return `${Math.floor(seconds / 86400)}d ago`;
+  }
+
+  viewIndexChart(symbol: string): void {
+    this.router.navigate(['/dashboard/chart', symbol]);
+  }
+
+  viewStockChart(symbol: string): void {
+    this.router.navigate(['/dashboard/chart', symbol]);
   }
 }

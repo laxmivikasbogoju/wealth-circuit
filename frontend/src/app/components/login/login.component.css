@@ -69,6 +69,14 @@
   margin-bottom: 40px;
 }
 
+.logo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: brightness(1.1);
+}
+
+/* If you want to keep the glow effect */
 .logo {
   display: inline-flex;
   align-items: center;
@@ -77,10 +85,10 @@
   height: 72px;
   background: linear-gradient(135deg, #00ffaa 0%, #7877ff 100%);
   border-radius: 20px;
-  color: #0a0e27;
   margin-bottom: 20px;
   box-shadow: 0 8px 32px rgba(0, 255, 170, 0.3);
   animation: logo-pulse 3s ease-in-out infinite;
+  padding: 12px; /* Space around image */
 }
 
 @keyframes logo-pulse {

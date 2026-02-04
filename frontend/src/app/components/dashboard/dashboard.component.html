@@ -3,11 +3,9 @@
   <header class="dashboard-header">
     <div class="header-content">
       <div class="logo-brand">
-        <svg width="32" height="32" viewBox="0 0 48 48" fill="none">
-          <path d="M8 32L16 24L24 28L40 12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-          <circle cx="40" cy="12" r="3" fill="currentColor"/>
-        </svg>
-        <span>StockHub</span>
+        <img src="assets/logo.png" alt="Mindset Logo" class="logo-image">
+
+        <span>Bullish Mindset</span>
       </div>
       
       <div class="header-actions">
@@ -41,7 +39,11 @@
         <h2>Market Overview</h2>
       </div>
       <div class="indices-grid">
-        <div *ngFor="let index of indices" class="index-card">
+        <div 
+          *ngFor="let index of indices" 
+          class="index-card clickable"
+          (click)="viewIndexChart(index.symbol)"
+        >
           <div class="index-header">
             <span class="index-name">{{ index.name }}</span>
             <span class="index-symbol">{{ index.symbol }}</span>
@@ -50,6 +52,12 @@
           <div class="index-change" [ngClass]="getChangeClass(index.change)">
             <span class="change-value">{{ formatChange(index.change) }}</span>
             <span class="change-percent">{{ formatPercent(index.change_percent) }}</span>
+          </div>
+          <div class="view-chart-hint">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+            </svg>
+            Click to view chart
           </div>
         </div>
       </div>
@@ -107,8 +115,7 @@
         <section class="popular-stocks">
           <div class="section-header">
             <h3>Trending Stocks</h3>
-            <span class="update-time">Updated
-</span>
+            <span class="update-time">Updated {{ getTimeAgo(nowIso)}}</span>
           </div>
           <div class="stocks-table">
             <div class="table-header">
@@ -118,7 +125,11 @@
               <div class="col-volume">Volume</div>
             </div>
             <div class="table-body">
-              <div *ngFor="let stock of popularStocks" class="stock-row">
+              <div 
+                *ngFor="let stock of popularStocks" 
+                class="stock-row clickable"
+                (click)="viewStockChart(stock.symbol)"
+              >
                 <div class="col-symbol">
                   <span class="symbol-text">{{ stock.symbol.replace('.NS', '') }}</span>
                 </div>

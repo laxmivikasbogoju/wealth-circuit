@@ -1,0 +1,117 @@
+<div class="chart-container">
+  <!-- Header -->
+  <header class="chart-header">
+    <div class="header-content">
+      <button class="back-btn" (click)="goBack()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        Back to Dashboard
+      </button>
+
+      <div class="header-brand">
+        <img src="/assets/logo.png" alt="StockHub Logo" class="header-logo-image"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
+        <svg width="28" height="28" viewBox="0 0 48 48" fill="none" class="header-logo-svg" style="display:none;">
+          <path d="M8 32L16 24L24 28L40 12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="40" cy="12" r="3" fill="currentColor"/>
+        </svg>
+        <span class="brand-name">Bullish Mindset</span>
+      </div>
+
+      <div class="stock-info">
+        <h1>{{ indexName }}</h1>
+        <span class="symbol">{{ symbol }}</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading chart data...</p>
+  </div>
+
+  <!-- Chart Content -->
+  <main *ngIf="!isLoading" class="chart-main">
+    <!-- Price Info -->
+    <div class="price-section">
+      <div class="current-price">
+        <span class="price-label">Current Price</span>
+        <div class="price-value">₹{{ currentPrice | number:'1.2-2' }}</div>
+      </div>
+      <div class="price-change" [ngClass]="getChangeClass()">
+        <span class="change-value">{{ change >= 0 ? '+' : '' }}{{ change | number:'1.2-2' }}</span>
+        <span class="change-percent">({{ changePercent >= 0 ? '+' : '' }}{{ changePercent | number:'1.2-2' }}%)</span>
+      </div>
+    </div>
+
+    <!-- Period and Chart Type Selectors -->
+    <div class="controls-wrapper">
+      <!-- Chart Type Selector -->
+      <div class="chart-type-selector">
+        <button 
+          *ngFor="let type of chartTypes" 
+          class="type-btn"
+          [class.active]="selectedChartType === type.value"
+          (click)="changeChartType(type.value)"
+        >
+          <svg *ngIf="type.value === 'candlestick'" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="2" x2="12" y2="6"></line>
+            <line x1="12" y1="18" x2="12" y2="22"></line>
+            <rect x="8" y="6" width="8" height="12" rx="1"></rect>
+          </svg>
+          <svg *ngIf="type.value === 'line'" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+          </svg>
+          {{ type.label }}
+        </button>
+      </div>
+
+      <!-- Period Selector -->
+      <div class="period-selector">
+        <button 
+          *ngFor="let period of periods" 
+          class="period-btn"
+          [class.active]="selectedPeriod === period.value"
+          (click)="changePeriod(period.value)"
+        >
+          {{ period.label }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Chart Container -->
+    <div class="chart-wrapper">
+      <div #chartContainer class="chart-container-inner"></div>
+    </div>
+
+    <!-- Additional Stats -->
+    <div class="stats-grid" *ngIf="historicalData.length > 0">
+      <div class="stat-card">
+        <span class="stat-label">Open</span>
+        <span class="stat-value">₹{{ historicalData[historicalData.length - 1].open | number:'1.2-2' }}</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">High</span>
+        <span class="stat-value positive">₹{{ historicalData[historicalData.length - 1].high | number:'1.2-2' }}</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Low</span>
+        <span class="stat-value negative">₹{{ historicalData[historicalData.length - 1].low | number:'1.2-2' }}</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Close</span>
+        <span class="stat-value">₹{{ historicalData[historicalData.length - 1].close | number:'1.2-2' }}</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Volume</span>
+        <span class="stat-value">{{ formatVolume(historicalData[historicalData.length - 1].volume) }}</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Prev Close</span>
+        <span class="stat-value">₹{{ historicalData[historicalData.length - 2]?.close | number:'1.2-2' }}</span>
+      </div>
+    </div>
+  </main>
+</div>
