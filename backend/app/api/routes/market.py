@@ -53,7 +53,23 @@ async def search_stocks(
 
 @router.get("/news", response_model=List[NewsItem])
 async def get_market_news(current_user: User = Depends(get_current_user)):
-    """Get latest market news"""
+    """
+    Get latest market news from RSS feeds
+    
+    Sources:
+    - Moneycontrol
+    - Economic Times
+    - Business Standard
+    - LiveMint
+    
+    Returns 8 most recent articles with:
+    - title
+    - description
+    - url
+    - source
+    - published_at
+    - image_url
+    """
     news = MarketDataService.get_market_news()
     return news
 

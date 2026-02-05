@@ -21,10 +21,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   news: NewsItem[] = [];
   currentUser: any;
   nowIso!: string;
-  
   private subscriptions: Subscription[] = [];
   isLoading = true;
-
+  isLoadingNews = false;
+  
   constructor(
     private marketDataService: MarketDataService,
     private authService: AuthService,
@@ -34,7 +34,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadData();
     this.setupRealTimeUpdates();
-    this.nowIso = new Date().toISOString();
+    this.nowIso=new Date().toISOString();
   }
 
   ngOnDestroy(): void {
@@ -115,6 +115,42 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   logout(): void {
     this.authService.logout();
+  }
+
+  loadNews(): void {
+    this.isLoadingNews = true;
+    const newsSub = this.marketDataService.getNews().subscribe({
+      next: (data) => {
+        this.news = data;
+        this.isLoadingNews = false;
+      },
+      error: (error) => {
+        console.error('Error loading news:', error);
+        this.isLoadingNews = false;
+      }
+    });
+    this.subscriptions.push(newsSub);
+  }
+
+  refreshNews(): void {
+    this.loadNews();
+  }
+
+  openNews(url: string): void {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }
+
+  openNewsInPopup(url: string): void {
+    const width = 1000;
+    const height = 800;
+    const left = (window.screen.width - width) / 2;
+    const top = (window.screen.height - height) / 2;
+    
+    window.open(
+      url,
+      'newsPopup',
+      `width=${width},height=${height},left=${left},top=${top},toolbar=no,menubar=no,scrollbars=yes,resizable=yes`
+    );
   }
 
   getTimeAgo(dateString: string): string {
