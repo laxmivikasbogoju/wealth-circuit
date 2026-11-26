@@ -1,0 +1,151 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.dashboard-header {
+  background: rgba(var(--panel-rgb), 0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(var(--fg-rgb), 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.header-content {
+  max-width: 1800px;
+  margin: 0 auto;
+  padding: 16px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+
+.logo-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #00ffaa;
+  white-space: nowrap;
+}
+
+.brand-logo-image {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.brand-logo-svg {
+  color: #00ffaa;
+  width: 32px;
+  height: 32px;
+}
+
+.header-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  flex: 1;
+  justify-content: center;
+}
+
+.header-nav-links a {
+  color: rgba(var(--fg-rgb), 0.7);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 6px 4px;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.header-nav-links a:hover {
+  color: var(--fg);
+}
+
+.header-nav-links a.active {
+  color: #00ffaa;
+  border-bottom-color: #00ffaa;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.live-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: rgba(var(--fg-rgb), 0.6);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.pulse {
+  width: 8px;
+  height: 8px;
+  background: #00ffaa;
+  border-radius: 50%;
+  animation: pulse-animation 2s ease-in-out infinite;
+}
+
+@keyframes pulse-animation {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.2);
+  }
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(var(--fg-rgb), 0.05);
+  border: 1px solid rgba(var(--fg-rgb), 0.1);
+  color: rgba(var(--fg-rgb), 0.8);
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Space Grotesk', sans-serif;
+  white-space: nowrap;
+}
+
+.logout-btn:hover {
+  background: rgba(255, 71, 87, 0.1);
+  border-color: rgba(255, 71, 87, 0.3);
+  color: #ff4757;
+}
+
+@media (max-width: 900px) {
+  .header-content {
+    flex-wrap: wrap;
+  }
+
+  .header-nav-links {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-content {
+    padding: 16px;
+  }
+}

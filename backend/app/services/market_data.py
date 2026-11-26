@@ -109,7 +109,11 @@ class MarketDataService:
         try:
             ticker = yf.Ticker(symbol)
             hist = ticker.history(period=period)
-            
+
+            # Some rows (e.g. partial/adjusted days) come back with NaN OHLC
+            # values, which json.dumps can't serialize ("Out of range float").
+            hist = hist.dropna(subset=['Open', 'High', 'Low', 'Close'])
+
             data = []
             for index, row in hist.iterrows():
                 data.append({
@@ -118,9 +122,9 @@ class MarketDataService:
                     "high": round(row['High'], 2),
                     "low": round(row['Low'], 2),
                     "close": round(row['Close'], 2),
-                    "volume": int(row['Volume'])
+                    "volume": int(row['Volume']) if pd.notna(row['Volume']) else 0
                 })
-            
+
             return data
         except Exception as e:
             print(f"Error fetching historical data for {symbol}: {e}")

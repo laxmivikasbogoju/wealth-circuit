@@ -1,0 +1,34 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.page-container {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.placeholder-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 12px;
+  min-height: 60vh;
+  padding: 24px;
+}
+
+.placeholder-main h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-top: 8px;
+}
+
+.placeholder-main p {
+  color: rgba(var(--fg-rgb), 0.6);
+  font-size: 15px;
+}

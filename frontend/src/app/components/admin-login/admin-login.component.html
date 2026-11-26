@@ -1,0 +1,63 @@
+<div class="login-container">
+  <app-theme-toggle class="theme-toggle-fixed"></app-theme-toggle>
+  <div class="login-card">
+    <div class="logo-section">
+      <div class="logo">
+        <img src="assets/logo.png" alt="Bullish Mindset Logo" class="logo-image">
+      </div>
+      <h1>Admin Login</h1>
+      <p class="tagline">Manage stock recommendations</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="admin@example.com"
+          [class.error]="email?.invalid && email?.touched"
+        />
+        <span class="error-text" *ngIf="email?.invalid && email?.touched">
+          <span *ngIf="email?.errors?.['required']">Email is required</span>
+          <span *ngIf="email?.errors?.['email']">Enter a valid email</span>
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="••••••••"
+          [class.error]="password?.invalid && password?.touched"
+        />
+        <span class="error-text" *ngIf="password?.invalid && password?.touched">
+          <span *ngIf="password?.errors?.['required']">Password is required</span>
+          <span *ngIf="password?.errors?.['minlength']">Minimum 6 characters</span>
+        </span>
+      </div>
+
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <button
+        type="submit"
+        class="submit-btn"
+        [disabled]="loginForm.invalid || isLoading"
+      >
+        <span *ngIf="!isLoading">Sign In</span>
+        <span *ngIf="isLoading" class="loading">Signing in...</span>
+      </button>
+
+      <a routerLink="/" class="back-link">
+        Back to site
+      </a>
+    </form>
+  </div>
+
+  <div class="background-pattern"></div>
+</div>

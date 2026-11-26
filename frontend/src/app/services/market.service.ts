@@ -9,7 +9,6 @@ import { StockQuote, MarketIndex, NewsItem, HistoricalData } from '../models/mar
 })
 export class MarketDataService {
   private apiUrl = `${environment.apiUrl}/market`;
-   private API = 'http://localhost:8000/market/news';
   constructor(private http: HttpClient) {}
 
   getIndices(): Observable<MarketIndex[]> {
@@ -43,7 +42,7 @@ export class MarketDataService {
   }
 
   getNews(): Observable<NewsItem[]> {
-    return this.http.get<NewsItem[]>(`${this.API}`);
+    return this.http.get<NewsItem[]>(`${this.apiUrl}/news`);
   }
 
   getPopularStocks(): Observable<StockQuote[]> {

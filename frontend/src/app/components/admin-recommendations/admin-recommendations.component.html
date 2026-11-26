@@ -1,0 +1,58 @@
+<div class="page-container">
+  <app-nav-header [showLive]="false"></app-nav-header>
+
+  <main class="admin-main">
+    <div class="admin-header">
+      <h1>Upload Recommendations</h1>
+      <p>Upload an Excel sheet of stock calls. Valid rows are appended to the <a routerLink="/dashboard/recommendations">Recommendations</a> page.</p>
+    </div>
+
+    <div class="upload-card">
+      <div class="columns-hint">
+        <h3>Expected columns</h3>
+        <div class="columns-grid">
+          <span class="col-req">Symbol</span>
+          <span class="col-req">Call Type <em>(BUY / SELL)</em></span>
+          <span class="col-req">Entry Low</span>
+          <span class="col-req">Entry High</span>
+          <span class="col-req">Target 1</span>
+          <span class="col-req">Target 2</span>
+          <span class="col-req">Stop Loss</span>
+          <span class="col-opt">Exchange <em>(default NSE)</em></span>
+          <span class="col-opt">Category <em>(Short Term / Positional / Intraday, default Positional)</em></span>
+          <span class="col-opt">Status <em>(Active / Target Hit / SL Hit, default Active)</em></span>
+          <span class="col-opt">Date <em>(default now)</em></span>
+        </div>
+      </div>
+
+      <div class="upload-controls">
+        <label class="file-drop" for="excel-file">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg>
+          <span>{{ selectedFile ? selectedFile.name : 'Choose an Excel file (.xlsx, .xls)' }}</span>
+        </label>
+        <input id="excel-file" type="file" accept=".xlsx,.xls" (change)="onFileSelected($event)" hidden>
+
+        <button class="upload-btn" [disabled]="!selectedFile || isUploading" (click)="upload()">
+          {{ isUploading ? 'Uploading...' : 'Upload' }}
+        </button>
+      </div>
+
+      <div class="result success" *ngIf="result">
+        <strong>{{ result.inserted }}</strong> row(s) added successfully.
+        <div class="skipped" *ngIf="result.skipped_rows.length">
+          <div class="skipped-title">{{ result.skipped_rows.length }} row(s) skipped:</div>
+          <ul>
+            <li *ngFor="let reason of result.skipped_rows">{{ reason }}</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="result error" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+    </div>
+  </main>
+</div>

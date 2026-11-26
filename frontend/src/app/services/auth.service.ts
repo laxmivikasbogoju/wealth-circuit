@@ -40,9 +40,13 @@ export class AuthService {
   }
 
   logout(): void {
+    this.clearSession();
+    this.router.navigate(['/']);
+  }
+
+  clearSession(): void {
     localStorage.removeItem('access_token');
     this.currentUserSubject.next(null);
-    this.router.navigate(['/auth/login']);
   }
 
   getToken(): string | null {

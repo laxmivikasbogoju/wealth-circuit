@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.database import engine, Base
-from app.api.routes import auth, market
+from app.api.routes import auth, market, recommendations
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
@@ -24,6 +24,7 @@ app.add_middleware(
 # Include routers
 app.include_router(auth.router)
 app.include_router(market.router)
+app.include_router(recommendations.router)
 
 @app.get("/")
 async def root():

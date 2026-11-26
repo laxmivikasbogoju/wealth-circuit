@@ -1,0 +1,113 @@
+<div class="home-container">
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="navbar-content">
+      <a href="#home" class="logo-brand">
+        <img src="assets/logo.png" alt="Wealth Circuit Logo" class="brand-logo-image">
+        <span>THE BULLISH MINDSET</span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#services">Our Services</a>
+        <a href="#courses">Courses</a>
+        <a href="#about">About Us</a>
+        <a href="#contact">Contact Us</a>
+        <a href="#faqs">FAQs</a>
+      </nav>
+
+      <div class="nav-actions">
+        <app-theme-toggle></app-theme-toggle>
+        <a routerLink="/auth/login" class="btn btn-outline">Login</a>
+        <a routerLink="/auth/register" class="btn btn-filled">Sign Up</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero / Home -->
+  <section id="home" class="hero-section">
+    <h1>Master the Markets with <span class="highlight">The Bullish Mindset</span></h1>
+    <p class="hero-subtext">
+      Real-time market intelligence, curated news, and expert-led courses to help you trade with confidence.
+    </p>
+    <div class="hero-actions">
+      <a routerLink="/auth/register" class="btn btn-filled btn-large">Get Started</a>
+      <a href="#courses" class="btn btn-outline btn-large">Explore Courses</a>
+    </div>
+  </section>
+
+  <!-- Our Services -->
+  <section id="services" class="section">
+    <h2>Our Services</h2>
+    <div class="cards-grid">
+      <div class="card">
+        <h3>Real-Time Market Data</h3>
+        <p>Live indices, stock quotes and charts to track the market as it moves.</p>
+      </div>
+      <div class="card">
+        <h3>Market News</h3>
+        <p>Curated, up-to-the-minute news to keep you informed on what matters.</p>
+      </div>
+      <div class="card">
+        <h3>Portfolio Insights</h3>
+        <p>Track gainers, losers and trending stocks in one clean dashboard.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Courses -->
+  <section id="courses" class="section section-alt">
+    <h2>Courses</h2>
+    <div class="cards-grid">
+      <div class="card">
+        <h3>Trading Fundamentals</h3>
+        <p>Learn the basics of market structure, order types and risk management.</p>
+      </div>
+      <div class="card">
+        <h3>Technical Analysis</h3>
+        <p>Read charts, spot trends and time your entries with confidence.</p>
+      </div>
+      <div class="card">
+        <h3>Building a Bullish Mindset</h3>
+        <p>The psychology and discipline behind consistent, long-term investing.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Us -->
+  <section id="about" class="section">
+    <h2>About Us</h2>
+    <p class="about-text">
+      The Bullish Mindset was built to make market intelligence and trading education accessible to everyone.
+      We combine real-time data with practical courses so you can learn and act with the same tools professionals use.
+    </p>
+  </section>
+
+  <!-- Contact Us -->
+  <section id="contact" class="section section-alt">
+    <h2>Contact Us</h2>
+    <p class="contact-text">
+      Have a question? Reach out and our team will get back to you.
+    </p>
+    <a href="mailto:support@wealthcircuit.com" class="btn btn-filled">Email Support</a>
+  </section>
+
+  <!-- FAQs -->
+  <section id="faqs" class="section">
+    <h2>FAQs</h2>
+    <div class="faq-list">
+      <div class="faq-item" *ngFor="let faq of faqs" (click)="toggleFaq(faq)">
+        <div class="faq-question">
+          <span>{{ faq.question }}</span>
+          <span class="faq-toggle">{{ faq.open ? '−' : '+' }}</span>
+        </div>
+        <p class="faq-answer" *ngIf="faq.open">{{ faq.answer }}</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>&copy; 2026 The Bullish Mindset. All rights reserved.</p>
+    <a routerLink="/admin/login" class="admin-login-link">Admin Login</a>
+  </footer>
+</div>

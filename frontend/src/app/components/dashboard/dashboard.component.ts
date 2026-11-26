@@ -3,13 +3,13 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { MarketDataService } from '../../services/market.service';
-import { AuthService } from '../../services/auth.service';
 import { StockQuote, MarketIndex, NewsItem } from '../../models/market.model';
+import { NavHeaderComponent } from '../shared/nav-header/nav-header.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NavHeaderComponent],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
@@ -24,10 +24,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   isLoading = true;
   isLoadingNews = false;
-  
+
   constructor(
     private marketDataService: MarketDataService,
-    private authService: AuthService,
     private router: Router
   ) {}
 
@@ -111,10 +110,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if (num >= 1e6) return `${(num / 1e6).toFixed(2)}M`;
     if (num >= 1e3) return `${(num / 1e3).toFixed(2)}K`;
     return num.toFixed(2);
-  }
-
-  logout(): void {
-    this.authService.logout();
   }
 
   loadNews(): void {

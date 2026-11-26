@@ -1,0 +1,210 @@
+<div class="page-container">
+  <app-nav-header [showLive]="false"></app-nav-header>
+
+  <main class="rec-main">
+    <!-- Title banner -->
+    <section class="title-banner">
+      <div class="title-block">
+        <h1>Stock <span class="highlight">Recommendations</span></h1>
+        <p>Expert-curated stock recommendations with clear entry, targets and stop loss to help you trade with confidence.</p>
+      </div>
+      <div class="tagline-card">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00ffaa" stroke-width="2">
+          <path d="M8 32L16 24L24 28L40 12" transform="scale(0.5)"></path>
+          <polyline points="3 17 9 11 13 15 21 5"></polyline>
+        </svg>
+        <span>Trade with <strong>a plan</strong>, not on emotions.</span>
+      </div>
+    </section>
+
+    <!-- Stat cards -->
+    <section class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-label">Total Recommendations</span>
+        <span class="stat-value">{{ stats.total }}</span>
+        <span class="stat-sub">All Time</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Hit Rate</span>
+        <span class="stat-value accent">{{ stats.hit_rate }}%</span>
+        <span class="stat-sub">Target vs Stop Loss</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Avg. Return</span>
+        <span class="stat-value" [class.accent]="stats.avg_return >= 0" [class.negative]="stats.avg_return < 0">
+          {{ formatPct(stats.avg_return) }}
+        </span>
+        <span class="stat-sub">Per Closed Call</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Active Recommendations</span>
+        <span class="stat-value">{{ stats.active }}</span>
+        <span class="stat-sub">Live Now</span>
+      </div>
+    </section>
+
+    <div class="content-layout">
+      <!-- Left: table -->
+      <div class="table-column">
+        <div class="tabs-row">
+          <button
+            *ngFor="let tab of tabs"
+            class="tab-btn"
+            [class.active]="activeTab === tab.id"
+            (click)="setTab(tab.id)"
+          >{{ tab.label }}</button>
+
+          <div class="search-box">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" placeholder="Search stock or script..." [(ngModel)]="searchQuery">
+          </div>
+        </div>
+
+        <div class="loading-state" *ngIf="isLoading">
+          <div class="spinner"></div>
+          <p>Loading recommendations...</p>
+        </div>
+
+        <div class="empty-state" *ngIf="!isLoading && filteredRecommendations.length === 0">
+          <p>No recommendations found.</p>
+        </div>
+
+        <div class="rec-table" *ngIf="!isLoading && filteredRecommendations.length">
+          <div class="table-header">
+            <div class="col-symbol">Stock / Script</div>
+            <div class="col-type">Call Type</div>
+            <div class="col-entry">Entry Range</div>
+            <div class="col-target">Target 1</div>
+            <div class="col-target">Target 2</div>
+            <div class="col-sl">Stop Loss</div>
+            <div class="col-status">Status</div>
+            <div class="col-date">Date &amp; Time</div>
+          </div>
+
+          <div class="table-body">
+            <div class="rec-row" *ngFor="let r of filteredRecommendations">
+              <div class="col-symbol">
+                <span class="symbol-badge">{{ r.symbol.charAt(0) }}</span>
+                <div class="symbol-text">
+                  <span class="symbol-name">{{ r.symbol }}</span>
+                  <span class="symbol-exchange">{{ r.exchange }}</span>
+                </div>
+              </div>
+              <div class="col-type">
+                <span class="type-badge" [class.sell]="r.call_type === 'SELL'">{{ r.call_type }}</span>
+              </div>
+              <div class="col-entry">₹{{ r.entry_low | number:'1.0-2' }} - {{ r.entry_high | number:'1.0-2' }}</div>
+              <div class="col-target">
+                <span class="value">₹{{ r.target1 | number:'1.0-2' }}</span>
+                <span class="pct positive">{{ formatPct(pctFor(r, r.target1)) }}</span>
+              </div>
+              <div class="col-target">
+                <span class="value">₹{{ r.target2 | number:'1.0-2' }}</span>
+                <span class="pct positive">{{ formatPct(pctFor(r, r.target2)) }}</span>
+              </div>
+              <div class="col-sl">
+                <span class="value">₹{{ r.stop_loss | number:'1.0-2' }}</span>
+                <span class="pct negative">{{ formatPct(pctFor(r, r.stop_loss)) }}</span>
+              </div>
+              <div class="col-status">
+                <span class="status-badge" [ngClass]="statusClass(r.status)">
+                  <svg *ngIf="r.status !== 'ACTIVE'" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  {{ displayStatus(r.status) }}
+                </span>
+              </div>
+              <div class="col-date">{{ formatDate(r.call_date) }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: sidebar -->
+      <aside class="sidebar-column">
+        <section class="sidebar-card">
+          <div class="sidebar-header">
+            <h3>Market Overview</h3>
+          </div>
+          <div class="index-row" *ngFor="let index of indices">
+            <span class="index-name">{{ index.name }}</span>
+            <div class="index-values">
+              <span class="index-value">{{ index.value | number:'1.2-2' }}</span>
+              <span class="index-change" [ngClass]="getChangeClass(index.change_percent)">{{ formatPercent(index.change_percent) }}</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="sidebar-card">
+          <div class="sidebar-header">
+            <h3>Top Gainers</h3>
+          </div>
+          <div class="mover-row" *ngFor="let stock of gainers">
+            <span class="mover-symbol">{{ stock.symbol.replace('.NS', '') }}</span>
+            <span class="mover-change positive">{{ formatPercent(stock.change_percent) }}</span>
+          </div>
+        </section>
+
+        <section class="sidebar-card">
+          <div class="sidebar-header">
+            <h3>Top Losers</h3>
+          </div>
+          <div class="mover-row" *ngFor="let stock of losers">
+            <span class="mover-symbol">{{ stock.symbol.replace('.NS', '') }}</span>
+            <span class="mover-change negative">{{ formatPercent(stock.change_percent) }}</span>
+          </div>
+        </section>
+
+        <section class="notify-card">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00ffaa" stroke-width="2">
+            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <p>Never miss a stock call. Get real-time alerts sent straight to your inbox.</p>
+          <button (click)="enableNotifications()" [disabled]="notificationsEnabled">
+            {{ notificationsEnabled ? 'Notifications Enabled' : 'Enable Notifications' }}
+          </button>
+        </section>
+      </aside>
+    </div>
+
+    <!-- Feature strip -->
+    <section class="feature-strip">
+      <div class="feature-item">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00ffaa" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        <div>
+          <h4>Expert Analysis</h4>
+          <p>Recommendations backed by in-depth research</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00ffaa" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+        <div>
+          <h4>Clear Targets</h4>
+          <p>Defined targets to help you book profits confidently</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00ffaa" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"></path></svg>
+        <div>
+          <h4>Risk Management</h4>
+          <p>Strict stop loss to protect your capital</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00ffaa" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        <div>
+          <h4>Timely Updates</h4>
+          <p>Real-time alerts on market moving opportunities</p>
+        </div>
+      </div>
+    </section>
+
+    <p class="disclaimer">
+      Disclaimer: These are our personal views for educational purposes only. Do your own research or consult your financial advisor before investing.
+    </p>
+  </main>
+</div>

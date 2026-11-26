@@ -1,17 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 .chart-container {
   min-height: 100vh;
-  background: #0a0e1a;
-  color: #ffffff;
+  background: var(--bg);
+  color: var(--fg);
   font-family: 'Space Grotesk', sans-serif;
 }
 
 /* Header */
 .chart-header {
-  background: rgba(15, 20, 35, 0.8);
+  background: rgba(var(--panel-rgb), 0.8);
   backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(var(--fg-rgb), 0.05);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -52,9 +51,9 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.8);
+  background: rgba(var(--fg-rgb), 0.05);
+  border: 1px solid rgba(var(--fg-rgb), 0.1);
+  color: rgba(var(--fg-rgb), 0.8);
   padding: 10px 18px;
   border-radius: 10px;
   font-size: 14px;
@@ -75,13 +74,13 @@
 .stock-info h1 {
   font-size: 32px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--fg);
   margin: 0 0 8px 0;
 }
 
 .symbol {
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(var(--fg-rgb), 0.5);
   font-family: 'JetBrains Mono', monospace;
 }
 
@@ -109,7 +108,7 @@
 }
 
 .loading-state p {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(var(--fg-rgb), 0.5);
   font-size: 16px;
 }
 
@@ -122,9 +121,9 @@
 
 /* Price Section */
 .price-section {
-  background: linear-gradient(135deg, rgba(20, 25, 45, 0.6) 0%, rgba(15, 20, 35, 0.6) 100%);
+  background: rgba(var(--panel-rgb), 0.6);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(var(--fg-rgb), 0.05);
   border-radius: 20px;
   padding: 32px;
   margin-bottom: 32px;
@@ -141,7 +140,7 @@
 
 .price-label {
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(var(--fg-rgb), 0.5);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   font-weight: 600;
@@ -150,7 +149,7 @@
 .price-value {
   font-size: 48px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--fg);
   font-family: 'JetBrains Mono', monospace;
 }
 
@@ -195,9 +194,9 @@
 .chart-type-selector {
   display: flex;
   gap: 12px;
-  background: rgba(15, 20, 35, 0.6);
+  background: rgba(var(--panel-rgb), 0.6);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(var(--fg-rgb), 0.05);
   border-radius: 16px;
   padding: 8px;
 }
@@ -208,7 +207,7 @@
   gap: 8px;
   background: transparent;
   border: none;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(var(--fg-rgb), 0.6);
   padding: 12px 20px;
   border-radius: 10px;
   font-size: 14px;
@@ -223,8 +222,8 @@
 }
 
 .type-btn:hover {
-  color: rgba(255, 255, 255, 0.9);
-  background: rgba(255, 255, 255, 0.05);
+  color: rgba(var(--fg-rgb), 0.9);
+  background: rgba(var(--fg-rgb), 0.05);
 }
 
 .type-btn.active {
@@ -241,9 +240,9 @@
 .period-selector {
   display: flex;
   gap: 12px;
-  background: rgba(15, 20, 35, 0.6);
+  background: rgba(var(--panel-rgb), 0.6);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(var(--fg-rgb), 0.05);
   border-radius: 16px;
   padding: 8px;
 }
@@ -251,7 +250,7 @@
 .period-btn {
   background: transparent;
   border: none;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(var(--fg-rgb), 0.6);
   padding: 12px 24px;
   border-radius: 10px;
   font-size: 14px;
@@ -262,8 +261,8 @@
 }
 
 .period-btn:hover {
-  color: rgba(255, 255, 255, 0.9);
-  background: rgba(255, 255, 255, 0.05);
+  color: rgba(var(--fg-rgb), 0.9);
+  background: rgba(var(--fg-rgb), 0.05);
 }
 
 .period-btn.active {
@@ -274,9 +273,9 @@
 
 /* Chart */
 .chart-wrapper {
-  background: rgba(15, 20, 35, 0.6);
+  background: rgba(var(--panel-rgb), 0.6);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(var(--fg-rgb), 0.05);
   border-radius: 20px;
   padding: 32px;
   margin-bottom: 32px;
@@ -322,9 +321,9 @@
 }
 
 .stat-card {
-  background: rgba(15, 20, 35, 0.6);
+  background: rgba(var(--panel-rgb), 0.6);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(var(--fg-rgb), 0.05);
   border-radius: 16px;
   padding: 24px;
   display: flex;
@@ -334,14 +333,14 @@
 }
 
 .stat-card:hover {
-  border-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(var(--fg-rgb), 0.1);
   transform: translateY(-4px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
 
 .stat-label {
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(var(--fg-rgb), 0.5);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   font-weight: 600;
@@ -350,7 +349,7 @@
 .stat-value {
   font-size: 24px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--fg);
   font-family: 'JetBrains Mono', monospace;
 }
 
